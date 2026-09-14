@@ -247,3 +247,5 @@ THM{Pr1v_35c_47_175_f1n357}
 7. **mkfifo reverse shell** → conexão nc para shell com controle de job
 8. **`sudo -l`** → `(root) NOPASSWD: /usr/bin/python3`
 9. **`sudo python3 -c 'os.system("cat /root/root.txt")'`** → `THM{Pr1v_35c_47_175_f1n357}`
+
+---

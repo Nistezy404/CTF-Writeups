@@ -221,3 +221,5 @@ O sistema confirmou o match entre os dois arquivos forjados, exibindo a flag dir
 4. **FastColl** → compilado e usado com `dog.jpg` como prefixo para gerar `md5_data1` e `md5_data2`, dois arquivos distintos com **MD5 idêntico** (`3a86310c1df7f2cc23fcc728c073008a`)
 5. **Upload sequencial** → `md5_data1` cadastrado na base, depois `md5_data2` enviado, disparando o match graças à colisão MD5
 6. **`/upload_success/<uuid>`** → página de resultado exibe "Match complete" e revela a flag: `THM{hash_puppies_4_all}`
+
+---

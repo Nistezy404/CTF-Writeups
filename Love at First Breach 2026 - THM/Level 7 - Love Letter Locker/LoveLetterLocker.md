@@ -109,3 +109,5 @@ THM{1 c4n r3ad 4ll l3tters w1th th1s 1d0r}
 4. **IDOR identificado** → `/letter/{id}` sem verificação de propriedade = qualquer ID acessível
 5. **`/letter/1`** → carta do usuário Gonz0 acessada sem autenticação como dono
 6. **Flag**: `THM{1 c4n r3ad 4ll l3tters w1th th1s 1d0r}`
+
+---

@@ -131,3 +131,5 @@ THM{R3v3rs3_Sh3ll_L0v3_C0nn3ct10ns}
 4. **Upload do `script.py`** como "foto de perfil" → servidor aceita sem validação → executa o arquivo durante o processamento
 5. **Shell recebida** como `root` em `/opt/Speed_Chat`
 6. **`cat flag.txt`** → `THM{R3v3rs3_Sh3ll_L0v3_C0nn3ct10ns}`
+
+---
