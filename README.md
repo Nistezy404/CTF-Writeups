@@ -34,26 +34,6 @@ O principal objetivo deste repositório é:
 
 ---
 
-## 📂 Estrutura do Repositório
-
-O conteúdo está organizado da seguinte forma:
-
-```
-📁 Forensic/
-📁 CTFs/
-📁 Malware/
-📁 OverTheWire/
-```
-
-Cada diretório contém writeups detalhados com:
-
-* Contexto do desafio
-* Metodologia aplicada
-* Ferramentas utilizadas
-* Passo a passo da resolução
-* Evidências (quando aplicável)
-
----
 
 ## 🛠️ Ferramentas e Tecnologias
 
