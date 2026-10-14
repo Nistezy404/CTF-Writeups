@@ -30,7 +30,6 @@ O principal objetivo deste repositório é:
 * Consolidar conhecimentos adquiridos em estudos e práticas
 * Demonstrar habilidades técnicas na área de segurança da informação
 * Compartilhar writeups detalhados com a comunidade
-* Criar um portfólio profissional voltado para oportunidades na área de cibersegurança
 
 ---
 
@@ -46,6 +45,7 @@ Algumas das ferramentas utilizadas nos estudos:
 * Nmap
 * Metasploit
 * ArchSec (OS Autoral)
+* ForenseWindows 10 (OS Autoral)
 
 ---
 
