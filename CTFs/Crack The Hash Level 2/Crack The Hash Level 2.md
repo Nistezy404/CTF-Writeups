@@ -57,9 +57,6 @@ moonligh56     (?)
 1g 0:00:00:00 DONE
 ```
 
-![Quebra do hash SHA-1 com a regra customizada THM01](images/task4-rule-crack.png)
-*Figura 1 — Regra `THM01` aplicada à wordlist Top 10k, quebrando o hash e revelando a senha `moonligh56`*
-
 **Senha (Task 4):** `moonligh56`
 
 ---
