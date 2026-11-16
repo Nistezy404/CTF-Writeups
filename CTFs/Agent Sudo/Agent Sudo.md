@@ -185,7 +185,7 @@ Input:  QXJlYTUx
 Output: Area51
 ```
 
-![zip2john/john quebrando a senha do ZIP (alien) e CyberChef decodificando QXJlYTUx em Area51](images/05-zip-crack-base64.png)
+![zip2john/john quebrando a senha do ZIP (alien) e CyberChef decodificando QXJlYTUx em Area51](images/Password_steg.png)
 *Figura 5 — `john` quebra a senha `alien` do ZIP extraído de `cutie.png`; `To_agentR.txt` contém a string Base64 `QXJlYTUx`, que decodificada resulta em `Area51` — a futura passphrase de esteganografia*
 
 ### Esteganografia em `cute-alien.jpg` com Steghide
@@ -231,7 +231,7 @@ chris
 
 A mensagem revela tanto o **usuário** (`james`) quanto a **senha de login SSH** (`hackerrules!`) do sistema.
 
-![Steghide extraindo message.txt de cute-alien.jpg com a passphrase Area51, revelando usuário e senha SSH](images/06-steghide-extract-message.png)
+![Steghide extraindo message.txt de cute-alien.jpg com a passphrase Area51, revelando usuário e senha SSH](images/ssh_Pass_and_User.png)
 *Figura 6 — `steghide extract` usando a passphrase `Area51` recupera `message.txt`, que revela as credenciais `james / hackerrules!`*
 
 ---
@@ -255,7 +255,7 @@ $ cat user_flag.txt
 b03d975e8c92a7c04146cfa7a5a313c7
 ```
 
-![Login SSH como james e captura da user flag](images/07-ssh-user-flag.png)
+![Login SSH como james e captura da user flag](images/User_Flag.png)
 *Figura 7 — Acesso via SSH como `james`; `user_flag.txt` contém a flag `b03d975e8c92a7c04146cfa7a5a313c7`*
 
 ### Identificando a imagem `Alien_autospy.jpg`
@@ -299,7 +299,7 @@ O exploit foi localizado no Exploit-DB (EDB-ID **47502**, "sudo 1.8.27 - Securit
 sudo -u#-1 /bin/bash
 ```
 
-![Exploit-DB com a PoC da CVE-2019-14287 e sudo -l confirmando a regra (ALL, !root) /bin/bash](images/09-cve-2019-14287-sudo.png)
+![Exploit-DB com a PoC da CVE-2019-14287 e sudo -l confirmando a regra (ALL, !root) /bin/bash](images/CVE.png)
 *Figura 9 — Página do Exploit-DB para a CVE-2019-14287 (sudo < 1.8.28); `sudo -l` confirma que James pode executar `/bin/bash` como qualquer usuário exceto root, o padrão vulnerável ao bypass via `sudo -u#-1`*
 
 ### Capturando a flag de root
@@ -332,7 +332,7 @@ DesKel a.k.a Agent R
 
 A mensagem final não apenas entrega a flag de root, como também revela a identidade por trás de **"Agent R"**: o criador da sala, **DesKel**.
 
-![Exploit CVE-2019-14287 executado com sucesso; root.txt revela a flag final e a identidade de Agent R (DesKel)](images/10-root-flag-agent-r.png)
+![Exploit CVE-2019-14287 executado com sucesso; root.txt revela a flag final e a identidade de Agent R (DesKel)](images/Agent_R_and_Root_Flag.png)
 *Figura 10 — `sudo -u#-1 /bin/bash` concede `uid=0(root)`; `root.txt` revela a flag `b53a02f55b57d4439e3341834d70c062` e que "Agent R" é, na verdade, `DesKel`*
 
 ---
@@ -372,15 +372,4 @@ A mensagem final não apenas entrega a flag de root, como também revela a ident
 | **SSH / SCP** | Acesso interativo e transferência de arquivos da máquina-alvo |
 | **Exploit-DB (EDB-ID 47502)** | PoC para CVE-2019-14287 (sudo security bypass) |
 
-## Principais Aprendizados
-
-- Filtros baseados em cabeçalhos HTTP (como `User-Agent`) não são controle de acesso real — qualquer cliente pode forjar esse valor com ferramentas simples como `curl -A`.
-- Reaproveitamento de pistas entre múltiplas camadas de ofuscação (Base64 → senha de ZIP → passphrase de esteganografia) é um padrão comum em CTFs: cada segredo revelado destrava o próximo.
-- `binwalk` é eficaz para encontrar arquivos **concatenados/embutidos** em uma imagem (como um ZIP anexado a um PNG), mas não substitui ferramentas de esteganografia dedicadas como `steghide`, que trabalham embutindo dados nos próprios bits da imagem.
-- Wordlists genéricas como `rockyou.txt` continuam extremamente eficazes contra senhas fracas, tanto em serviços de rede (FTP via Hydra) quanto em arquivos protegidos por senha (ZIP via John).
-- **CVE-2019-14287** mostra como uma configuração de `sudoers` aparentemente restritiva (`ALL, !root`) pode ser contornada com um UID negativo/overflow (`-1` → `4294967295` → interpretado como `0`) em versões do `sudo` anteriores à 1.8.28 — reforçando a importância de manter pacotes de sistema atualizados.
-- Nem toda "evidência" dentro de uma máquina CTF é técnica: parte do desafio envolvia reconhecer, via pesquisa (OSINT), que a imagem entregue era a famosa farsa da autópsia alienígena de Roswell — um lembrete de que investigação de contexto também faz parte do processo de um pentest/CTF.
-
 ---
-
-*Writeup — TryHackMe Room: [Agent Sudo](https://tryhackme.com/room/agentsudoctf)*
